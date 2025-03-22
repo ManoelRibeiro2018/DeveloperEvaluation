@@ -15,11 +15,10 @@
             Success = true
         };
 
-        public static ResultResponse<T> Failure(T payload, int statusCode, string message) => new()
+        public static ResultResponse<T> Failure( int statusCode, string message) => new()
         {
             Message = message,
             StatusCode = statusCode,
-            Payload = payload,
             Success = false
         };
     }
