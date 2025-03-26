@@ -8,12 +8,12 @@
         public Guid BranchId { get; set; }
         public decimal TotalSaleAmount { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
-        public List<SaleItem> Products { get; set; } = [];
+        public List<SaleItem> SaleItens { get; set; } = [];
         public bool IsCanceled { get; set; }
 
         public void CalculateTotalAmount()
         {
-            TotalSaleAmount = Products.Sum(e => e.TotalPrice);
+            TotalSaleAmount = SaleItens.Sum(e => e.TotalPrice);
         }
     }
 }

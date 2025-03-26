@@ -12,5 +12,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         Task<List<Sale>> GetAllAsync(CancellationToken cancellationToken);
 
         Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<Guid> UpdateAsync(Sale sale, CancellationToken cancellationToken = default);
     }
 }

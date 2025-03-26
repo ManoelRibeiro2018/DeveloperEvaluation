@@ -3,7 +3,6 @@ using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -36,7 +35,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             var validationResult = await _validationRules.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+                return ResultResponse<CreateSaleResult>.Failure(400, validationResult.Errors);
+            
 
             if (request.Products.Exists(e => e.Quantity > 20))
             {
@@ -52,7 +52,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             {
                 UserId = request.UserId,
                 BranchId = request.BranchId,
-                Products = request.Products.Select(p =>
+                SaleItens = request.Products.Select(p =>
                 {
                     var productSale = new SaleItem
                     {

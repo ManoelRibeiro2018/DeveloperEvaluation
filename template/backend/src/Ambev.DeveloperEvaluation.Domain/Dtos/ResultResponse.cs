@@ -1,4 +1,7 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Dtos
+﻿using FluentValidation.Results;
+using System.Text;
+
+namespace Ambev.DeveloperEvaluation.Domain.Dtos
 {
     public class ResultResponse<T> where T : class
     {
@@ -21,5 +24,17 @@
             StatusCode = statusCode,
             Success = false
         };
+
+        public static ResultResponse<T> Failure(int statusCode, List<ValidationFailure> errors)
+        {
+            StringBuilder sb = new();
+            errors.ForEach(e => { sb.AppendLine(e.ErrorMessage); });
+            return new()
+            {
+                Message = sb.ToString(),
+                StatusCode = statusCode,
+                Success = false,
+            };
+        }
     }
 }

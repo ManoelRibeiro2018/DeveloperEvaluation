@@ -1,8 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Dtos;
-using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -29,15 +27,15 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale
 
         public async Task<ResultResponse<DeleteSaleResponse>> Handle(DeleteSaleCommand request, CancellationToken cancellationToken)
         {
-            var validator = await _validations.ValidateAsync(request);
-            if (validator is not null) throw new ValidationException(validator.Errors);
-
+            var validationResult = await _validations.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+                return ResultResponse<DeleteSaleResponse>.Failure(400, validationResult.Errors);
 
             var success = await _saleRepository.DeleteAsync(request.Id, cancellationToken);
             if (!success)
             {
                 _logger.LogError("Sale with ID {SaleId} not found to delete", request.Id);
-                return ResultResponse<DeleteSaleResponse>.Failure(404, $"Sale with ID {request.Id} not found");
+                return ResultResponse<DeleteSaleResponse>.Failure(404, "Sale not found");
             }
 
             _logger.LogInformation("Sale with ID {SaleId} deleted successfully", request.Id);
