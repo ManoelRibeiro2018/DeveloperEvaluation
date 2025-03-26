@@ -75,7 +75,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
             var saleResult = new CreateSaleResult { Id = createdSale.Id };
 
-            return ResultResponse<CreateSaleResult>.Successful(saleResult, 201, "Sale created with success");
+            return ResultResponse<CreateSaleResult>.Successful(saleResult, 201, "Sale created successfully");
         }
     }
 }
