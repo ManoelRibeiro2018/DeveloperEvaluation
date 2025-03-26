@@ -15,22 +15,25 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         private readonly IEventPublisher _eventPublisher;
         private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;
+        private readonly CreateSaleValidator _validationRules;
 
         public CreateSaleHandler(ILogger<CreateSaleHandler> logger,
             IEventPublisher eventPublisher,
             ISaleRepository saleRepository,
-            IMapper mapper)
+            IMapper mapper,
+            CreateSaleValidator validationRules)
         {
             _logger = logger;
             _eventPublisher = eventPublisher;
             _saleRepository = saleRepository;
             _mapper = mapper;
+            _validationRules = validationRules;
         }
 
         public async Task<ResultResponse<CreateSaleResult>> Handle(CreateSaleCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateSaleValidator();
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+            var validationResult = await _validationRules.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
@@ -68,16 +71,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
             _logger.LogInformation("Sale created successfully ID {SaleId}", createdSale.Id);
 
-            await PublishEventAsync(createdSale, cancellationToken);
+            await _eventPublisher.PublishAsync(createdSale, cancellationToken);
 
             var saleResult = new CreateSaleResult { Id = createdSale.Id };
 
             return ResultResponse<CreateSaleResult>.Successful(saleResult, 201, "Sale created with success");
-        }
-
-        private async Task PublishEventAsync(Sale createdSale, CancellationToken cancellationToken)
-        {
-            await _eventPublisher.PublishAsync(createdSale, cancellationToken);
         }
     }
 }

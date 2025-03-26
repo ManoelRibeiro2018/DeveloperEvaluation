@@ -11,7 +11,6 @@
 
         public void ApplyDiscount()
         {
-            if (Quantity > 20) {}
             if (Quantity >= 10) Discount = 0.20m;
             else if (Quantity >= 4) Discount = 0.10m;
             else Discount = 0.00m;
