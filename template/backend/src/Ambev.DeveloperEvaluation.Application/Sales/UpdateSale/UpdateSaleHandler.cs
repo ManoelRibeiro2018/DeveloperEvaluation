@@ -15,14 +15,39 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
         private readonly IMapper _mapper;
         private readonly ILogger<UpdateSaleHandler> _logger;
         private readonly IEventPublisher _eventPublisher;
+        private readonly UpdateSaleValidator _validationRules;
+
+        public UpdateSaleHandler(ISaleRepository saleRepository,
+            IMapper mapper,
+            ILogger<UpdateSaleHandler> logger,
+            IEventPublisher eventPublisher,
+            UpdateSaleValidator validationRules)
+        {
+            _saleRepository = saleRepository;
+            _mapper = mapper;
+            _logger = logger;
+            _eventPublisher = eventPublisher;
+            _validationRules = validationRules;
+        }
+
         public async Task<ResultResponse<UpdateSaleResult>> Handle(UpdateSaleCommand request, CancellationToken cancellationToken)
         {
+
+            var validationResult = await _validationRules.ValidateAsync(request, cancellationToken);
+
+            if (!validationResult.IsValid)
+                return ResultResponse<UpdateSaleResult>.Failure(400, validationResult.Errors);
+
 
             var sale = await _saleRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (sale is null)
             {
-                _logger.LogError("Sale not found to update");
+                _logger.LogError("ClassName : {ClassName} - MethodName: {MethodName} - Message : {Message}",
+                               nameof(CreateSaleHandler),
+                               nameof(Handle),
+                               "Sale not found to update.");
+
                 return ResultResponse<UpdateSaleResult>.Failure(404, "Sale not found to update");
             }
 
@@ -51,7 +76,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
                 return saleItem;
             }).ToList();
 
-
             sale.CalculateTotalAmount();
 
             var result = await _saleRepository.UpdateAsync(sale, cancellationToken);
@@ -60,7 +84,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 
             await _eventPublisher.PublishAsync(sale, cancellationToken);
 
-            return ResultResponse<UpdateSaleResult>.Successful(new UpdateSaleResult { Id = result },204, "Sale updated successfully");
+            return ResultResponse<UpdateSaleResult>.Successful(new UpdateSaleResult { Id = result }, 204, "Sale updated successfully");
         }
     }
 }

@@ -34,11 +34,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale
             var success = await _saleRepository.DeleteAsync(request.Id, cancellationToken);
             if (!success)
             {
-                _logger.LogError("Sale with ID {SaleId} not found to delete", request.Id);
+                _logger.LogError("Sale not found to delete");
                 return ResultResponse<DeleteSaleResponse>.Failure(404, "Sale not found");
             }
 
-            _logger.LogInformation("Sale with ID {SaleId} deleted successfully", request.Id);
+            _logger.LogInformation("Sale deleted successfully");
 
             await _eventPublisher.PublishAsync(request.Id, cancellationToken);
 
