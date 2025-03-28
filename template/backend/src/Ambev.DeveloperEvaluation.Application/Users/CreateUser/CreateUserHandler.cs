@@ -52,10 +52,11 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, ResultRespon
             return ResultResponse<CreateUserResult>.Failure(409, $"User with email {command.Email} already exists");
 
         var user = _mapper.Map<User>(command);
+        user.CreatedAt = DateTime.UtcNow;
         user.Password = _passwordHasher.HashPassword(command.Password);
 
         var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
         var result = _mapper.Map<CreateUserResult>(createdUser);
-        return ResultResponse<CreateUserResult>.Successful(result, 201, "USer created successfully");
+        return ResultResponse<CreateUserResult>.Successful(result, 201, "User created successfully");
     }
 }
