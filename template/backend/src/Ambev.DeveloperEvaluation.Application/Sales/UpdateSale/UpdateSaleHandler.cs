@@ -5,7 +5,10 @@ using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
+using System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 {
@@ -32,12 +35,10 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 
         public async Task<ResultResponse<UpdateSaleResult>> Handle(UpdateSaleCommand request, CancellationToken cancellationToken)
         {
-
             var validationResult = await _validationRules.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
                 return ResultResponse<UpdateSaleResult>.Failure(400, validationResult.Errors);
-
 
             var sale = await _saleRepository.GetByIdAsync(request.Id, cancellationToken);
 
@@ -61,14 +62,17 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
                 return ResultResponse<UpdateSaleResult>.Failure(409, "Maximum limit of 20 items per product.");
             }
 
-            sale.UserId = request.UserId;
             sale.BranchId = request.BranchId;
             sale.IsCanceled = request.IsCanceled;
-            sale.UpdatedAt = DateTime.UtcNow;
+            sale.Date = DateTime.SpecifyKind(sale.Date, DateTimeKind.Utc).ToUniversalTime();
+            sale.CreatedAt = DateTime.SpecifyKind(sale.CreatedAt, DateTimeKind.Utc).ToUniversalTime();
+            DateTime data = (DateTime)(sale.UpdatedAt == null ? DateTime.Now : sale.UpdatedAt);
+            sale.UpdatedAt = DateTime.SpecifyKind(data, DateTimeKind.Utc).ToUniversalTime();
             sale.SaleItens = request.SaleItens.Select(p =>
             {
                 var saleItem = new SaleItem
                 {
+                    Name = p.Name,
                     Quantity = p.Quantity,
                     UnitPrice = p.UnitPrice
                 };

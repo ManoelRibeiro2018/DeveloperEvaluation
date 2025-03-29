@@ -11,5 +11,6 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sale.CreateSale
         public Guid BranchId { get; set; }
         public List<CreateSaleItemResponse> SaleItens { get; set; } = [];
         public bool IsCanceled { get; set; }
+
     }
 }

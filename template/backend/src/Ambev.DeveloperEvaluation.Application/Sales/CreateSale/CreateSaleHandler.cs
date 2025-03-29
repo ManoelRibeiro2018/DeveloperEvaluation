@@ -2,6 +2,7 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Domain.Util;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -52,11 +53,13 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             {
                 UserId = request.UserId,
                 BranchId = request.BranchId,
+                Number = request.Number.GenerateOrderNumber(),
                 SaleItens = request.SaleItens.Select(p =>
                 {
                     var saleItem = new SaleItem
                     {
-                        Name = p.Name,                        
+                        ProductId = p.ProductId,
+                        Name = p.Name,
                         Quantity = p.Quantity,
                         UnitPrice = p.UnitPrice
                     };
@@ -67,9 +70,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             };
 
             sale.CalculateTotalAmount();
-
+            sale.SetDateTime();
             var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
-
+            
             _logger.LogInformation("Sale created successfully ID {SaleId}", createdSale.Id);
 
             await _eventPublisher.PublishAsync(createdSale, cancellationToken);

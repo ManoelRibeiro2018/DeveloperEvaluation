@@ -2,11 +2,10 @@
 {
     public static class ExtensionMethod
     {
-        public static string GenerateNumberOrder()
+        public static string GenerateOrderNumber(this string timestamp)
         {
-            Random random = new(DateTime.Now.Millisecond);
-            int randomNumber = random.Next(1000, 9999);
-            return randomNumber.ToString();
+            int randomNumber = Random.Shared.Next(1000, 9999);
+            return $"ORD-{timestamp}-{randomNumber}";
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
 
         public async Task<List<Sale>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Sales.ToListAsync(cancellationToken);
+            return await _context.Sales.Include(e => e.SaleItens).ToListAsync(cancellationToken);
         }
 
         public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

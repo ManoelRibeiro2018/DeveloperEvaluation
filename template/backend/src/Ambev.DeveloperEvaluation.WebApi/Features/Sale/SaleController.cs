@@ -59,7 +59,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sale
             return StatusCode(response.StatusCode, response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ResultResponse<DeleteSaleResponse>), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ResultResponse<>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ResultResponse<>), StatusCodes.Status404NotFound)]

@@ -1,6 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Dtos;
-using Ambev.DeveloperEvaluation.WebApi.Features.SaleItem;
-
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sale.CreateSale
 {
     public class CreateSaleRequest

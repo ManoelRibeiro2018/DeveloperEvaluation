@@ -5,7 +5,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Dtos
 {
     public class ResultResponse<T> where T : class
     {
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
         public int StatusCode { get; set; }
         public T Payload { get; set; }
         public bool Success { get; set; }

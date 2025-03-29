@@ -12,12 +12,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
                 .NotEqual(default(Guid))
                 .WithMessage("It's necessary valid Id");
 
-            RuleFor(e => e.UserId)
-                .NotEmpty()
-                .NotNull()
-                .NotEqual(default(Guid))
-                .WithMessage("It's necessary valid UserId");
-
             RuleFor(e => e.BranchId)
                 .NotEmpty()
                 .NotNull()
