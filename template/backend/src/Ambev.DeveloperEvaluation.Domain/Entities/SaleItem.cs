@@ -10,6 +10,7 @@
         public decimal UnitPrice { get; set; }
         public decimal Discount { get; set; }
         public decimal TotalPrice { get; set; }
+        public DateTime CreatedAt { get; set; }
         public void ApplyDiscount()
         {
             if (Quantity >= 10) Discount = 0.20m;
