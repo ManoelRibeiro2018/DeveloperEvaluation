@@ -38,12 +38,11 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
 
         public async Task<Sale?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _context.Sales.FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+            return await _context.Sales.Include(e => e.SaleItens).FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
         }
 
         public async Task<Guid> UpdateAsync(Sale sale, CancellationToken cancellationToken = default)
         {
-            _context.Sales.Update(sale);
             await _context.SaveChangesAsync(cancellationToken);
             return sale.Id;
         }

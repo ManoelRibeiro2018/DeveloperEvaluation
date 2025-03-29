@@ -25,5 +25,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc).ToUniversalTime();
             CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc).ToUniversalTime();
         }
+
+        public void Update(Sale sale)
+        {
+            sale.Date = DateTime.SpecifyKind(sale.Date, DateTimeKind.Utc).ToUniversalTime();
+            sale.CreatedAt = DateTime.SpecifyKind(sale.CreatedAt, DateTimeKind.Utc).ToUniversalTime();
+            DateTime data = (DateTime)(sale.UpdatedAt == null ? DateTime.Now : sale.UpdatedAt);
+            sale.UpdatedAt = DateTime.SpecifyKind(data, DateTimeKind.Utc).ToUniversalTime();           
+        }
     }
 }

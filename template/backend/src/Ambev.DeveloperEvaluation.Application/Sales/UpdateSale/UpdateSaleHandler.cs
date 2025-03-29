@@ -5,10 +5,7 @@ using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
-using System;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 {
@@ -62,25 +59,21 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
                 return ResultResponse<UpdateSaleResult>.Failure(409, "Maximum limit of 20 items per product.");
             }
 
+            sale.SaleItens.ForEach(e =>
+            {
+                var itemNew = request.SaleItens.Where(i => i.Id == e.Id).FirstOrDefault();
+                if (itemNew != null)
+                {
+                    e.Name = itemNew.Name;
+                    e.Quantity = itemNew.Quantity;
+                    e.UnitPrice = itemNew.UnitPrice;
+                    e.ApplyDiscount();
+                }
+            });
+
             sale.BranchId = request.BranchId;
             sale.IsCanceled = request.IsCanceled;
-            sale.Date = DateTime.SpecifyKind(sale.Date, DateTimeKind.Utc).ToUniversalTime();
-            sale.CreatedAt = DateTime.SpecifyKind(sale.CreatedAt, DateTimeKind.Utc).ToUniversalTime();
-            DateTime data = (DateTime)(sale.UpdatedAt == null ? DateTime.Now : sale.UpdatedAt);
-            sale.UpdatedAt = DateTime.SpecifyKind(data, DateTimeKind.Utc).ToUniversalTime();
-            sale.SaleItens = request.SaleItens.Select(p =>
-            {
-                var saleItem = new SaleItem
-                {
-                    Name = p.Name,
-                    Quantity = p.Quantity,
-                    UnitPrice = p.UnitPrice
-                };
-
-                saleItem.ApplyDiscount();
-                return saleItem;
-            }).ToList();
-
+            sale.Update(sale);
             sale.CalculateTotalAmount();
 
             var result = await _saleRepository.UpdateAsync(sale, cancellationToken);
@@ -89,7 +82,10 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 
             await _eventPublisher.PublishAsync(sale, cancellationToken);
 
-            return ResultResponse<UpdateSaleResult>.Successful(new UpdateSaleResult { Id = result }, 204, "Sale updated successfully");
+            return ResultResponse<UpdateSaleResult>.Successful(new UpdateSaleResult
+            {
+                Id = result
+            }, 204, "Sale updated successfully");
         }
     }
 }
