@@ -51,7 +51,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
                 return ResultResponse<UpdateSaleResult>.Failure(404, "Sale not found to update");
             }
 
-            if (request.SaleItemDtos.Exists(e => e.Quantity > 20))
+            if (request.SaleItens.Exists(e => e.Quantity > 20))
             {
                 _logger.LogError("ClassName : {ClassName} - MethodName: {MethodName} - Message : {Message}",
                                nameof(CreateSaleHandler),
@@ -65,7 +65,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
             sale.BranchId = request.BranchId;
             sale.IsCanceled = request.IsCanceled;
             sale.UpdatedAt = DateTime.UtcNow;
-            sale.SaleItens = request.SaleItemDtos.Select(p =>
+            sale.SaleItens = request.SaleItens.Select(p =>
             {
                 var saleItem = new SaleItem
                 {
