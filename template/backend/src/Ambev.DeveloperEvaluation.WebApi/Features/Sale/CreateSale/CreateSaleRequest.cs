@@ -1,11 +1,12 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Dtos;
+using Ambev.DeveloperEvaluation.WebApi.Features.SaleItem;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sale.CreateSale
 {
     public class CreateSaleRequest
     {
-        public string Customer { get; set; } 
-        public string Branch { get; set; }
-        public List<SaleItemDto> SaleItemDtos { get; set; } = [];
+        public Guid UserID { get; set; } 
+        public Guid BranchId { get; set; }
+        public List<CreateSaleItemRequest> SaleItens { get; set; } = [];
     }
 }

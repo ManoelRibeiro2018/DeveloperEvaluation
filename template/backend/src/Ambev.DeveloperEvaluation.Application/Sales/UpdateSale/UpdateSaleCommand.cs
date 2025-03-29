@@ -8,7 +8,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid BranchId { get; set; }
-        public List<SaleItemDto> SaleItemDtos { get; set; } = [];
+        public List<CreateSaleItemRequest> SaleItens { get; set; } = [];
         public bool IsCanceled { get; set; }
     }
 }

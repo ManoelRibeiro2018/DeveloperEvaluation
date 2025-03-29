@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
     {
         public CreateSaleValidator()
         {
-            RuleFor(e => e.Products)
+            RuleFor(e => e.SaleItens)
                 .NotEmpty()
                 .WithMessage("Produt is required");
 

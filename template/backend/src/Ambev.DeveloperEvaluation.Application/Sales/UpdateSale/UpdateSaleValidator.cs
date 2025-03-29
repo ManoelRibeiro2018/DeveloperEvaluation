@@ -24,7 +24,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
                 .NotEqual(default(Guid))
                 .WithMessage("It's necessary valid BranchId");
 
-            RuleFor(e => e.SaleItemDtos)
+            RuleFor(e => e.SaleItens)
                 .NotEmpty()
                 .WithMessage("It's necessary valid list item sale");
         }

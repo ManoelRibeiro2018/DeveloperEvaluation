@@ -19,6 +19,8 @@ public class CreateUserHandlerTests
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
     private readonly CreateUserHandler _handler;
+    private readonly CreateUserCommandValidator _validator;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateUserHandlerTests"/> class.
@@ -29,7 +31,8 @@ public class CreateUserHandlerTests
         _userRepository = Substitute.For<IUserRepository>();
         _mapper = Substitute.For<IMapper>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
-        _handler = new CreateUserHandler(_userRepository, _mapper, _passwordHasher);
+        _validator = Substitute.For<CreateUserCommandValidator>();
+        _handler = new CreateUserHandler(_userRepository, _mapper, _passwordHasher, _validator);
     }
 
     /// <summary>
@@ -66,10 +69,11 @@ public class CreateUserHandlerTests
 
         // When
         var createUserResult = await _handler.Handle(command, CancellationToken.None);
+        CreateUserResult userResult = createUserResult.Payload;
 
         // Then
         createUserResult.Should().NotBeNull();
-        createUserResult.Id.Should().Be(user.Id);
+        userResult.Id.Should().Be(user.Id);
         await _userRepository.Received(1).CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>());
     }
 

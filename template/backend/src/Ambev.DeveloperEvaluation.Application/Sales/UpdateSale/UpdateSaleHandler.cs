@@ -64,6 +64,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
             sale.UserId = request.UserId;
             sale.BranchId = request.BranchId;
             sale.IsCanceled = request.IsCanceled;
+            sale.UpdatedAt = DateTime.UtcNow;
             sale.SaleItens = request.SaleItemDtos.Select(p =>
             {
                 var saleItem = new SaleItem

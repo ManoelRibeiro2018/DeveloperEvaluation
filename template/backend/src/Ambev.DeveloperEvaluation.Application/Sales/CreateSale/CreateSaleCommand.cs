@@ -12,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         public Guid BranchId { get; set; }
         public decimal TotalSaleAmount { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
-        public List<SaleItem> Products { get; set; } = [];
+        public List<CreateSaleItemRequest> SaleItens { get; set; } = [];
         public bool IsCanceled { get; set; }
     }
 }

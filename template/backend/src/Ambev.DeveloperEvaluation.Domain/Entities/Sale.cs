@@ -10,6 +10,8 @@
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public List<SaleItem> SaleItens { get; set; } = [];
         public bool IsCanceled { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
 
         public void CalculateTotalAmount()
         {

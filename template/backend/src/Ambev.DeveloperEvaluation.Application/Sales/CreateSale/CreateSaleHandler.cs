@@ -38,7 +38,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
                 return ResultResponse<CreateSaleResult>.Failure(400, validationResult.Errors);
             
 
-            if (request.Products.Exists(e => e.Quantity > 20))
+            if (request.SaleItens.Exists(e => e.Quantity > 20))
             {
                 _logger.LogError("ClassName : {ClassName} - MethodName: {MethodName} - Message : {Message}",
                                nameof(CreateSaleHandler),
@@ -52,16 +52,17 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             {
                 UserId = request.UserId,
                 BranchId = request.BranchId,
-                SaleItens = request.Products.Select(p =>
+                SaleItens = request.SaleItens.Select(p =>
                 {
-                    var productSale = new SaleItem
+                    var saleItem = new SaleItem
                     {
+                        Name = p.Name,                        
                         Quantity = p.Quantity,
                         UnitPrice = p.UnitPrice
                     };
 
-                    productSale.ApplyDiscount();
-                    return productSale;
+                    saleItem.ApplyDiscount();
+                    return saleItem;
                 }).ToList()
             };
 
