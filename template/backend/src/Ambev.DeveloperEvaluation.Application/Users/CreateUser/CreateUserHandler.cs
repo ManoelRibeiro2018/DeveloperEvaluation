@@ -43,7 +43,6 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, ResultRespon
     public async Task<ResultResponse<CreateUserResult>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
-
         if (!validationResult.IsValid)
             return ResultResponse<CreateUserResult>.Failure(400, validationResult.Errors);
 

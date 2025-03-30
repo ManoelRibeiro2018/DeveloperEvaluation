@@ -5,6 +5,9 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Domain;
 using AutoMapper;
 using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
+using Moq;
 using NSubstitute;
 using Xunit;
 
@@ -31,7 +34,7 @@ public class CreateUserHandlerTests
         _userRepository = Substitute.For<IUserRepository>();
         _mapper = Substitute.For<IMapper>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
-        _validator = Substitute.For<CreateUserCommandValidator>();
+        _validator = new();
         _handler = new CreateUserHandler(_userRepository, _mapper, _passwordHasher, _validator);
     }
 
@@ -84,13 +87,15 @@ public class CreateUserHandlerTests
     public async Task Handle_InvalidRequest_ThrowsValidationException()
     {
         // Given
-        var command = new CreateUserCommand(); // Empty command will fail validation
+        var command = new CreateUserCommand();
+
+        await _validator.ValidateAsync(command);
 
         // When
-        var act = () => _handler.Handle(command, CancellationToken.None);
+        var result = await _handler.Handle(command, CancellationToken.None);
 
         // Then
-        await act.Should().ThrowAsync<FluentValidation.ValidationException>();
+        Assert.False(result.Success);
     }
 
     /// <summary>
