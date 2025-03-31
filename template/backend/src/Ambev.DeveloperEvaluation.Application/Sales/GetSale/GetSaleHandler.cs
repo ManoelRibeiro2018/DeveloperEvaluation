@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
 {
-    internal class GetSaleHandler : IRequestHandler<GetSaleCommand, ResultResponse<List<GetSaleResult>>>
+    public class GetSaleHandler : IRequestHandler<GetSaleCommand, ResultResponse<List<GetSaleResult>>>
     {
         private readonly ISaleRepository _saleRepository;
         private readonly IMapper _mapper;

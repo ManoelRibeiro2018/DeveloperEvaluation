@@ -37,7 +37,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
             if (!validationResult.IsValid)
                 return ResultResponse<CreateSaleResult>.Failure(400, validationResult.Errors);
-            
+
 
             if (request.SaleItens.Exists(e => e.Quantity > 20))
             {
@@ -72,7 +72,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             sale.CalculateTotalAmount();
             sale.SetDateTime();
             var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
-            
+
             _logger.LogInformation("Sale created successfully ID {SaleId}", createdSale.Id);
 
             await _eventPublisher.PublishAsync(createdSale, cancellationToken);

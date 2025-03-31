@@ -9,5 +9,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
         public Guid BranchId { get; set; }
         public List<UpdateSaleItemRequest> SaleItens { get; set; } = [];
         public bool IsCanceled { get; set; }
+        public decimal TotalSaleAmount { get; set; }
     }
 }

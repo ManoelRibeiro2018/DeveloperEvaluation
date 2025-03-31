@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale
 {
-    internal class DeleteSaleHandler : IRequestHandler<DeleteSaleCommand, ResultResponse<DeleteSaleResponse>>
+    public class DeleteSaleHandler : IRequestHandler<DeleteSaleCommand, ResultResponse<DeleteSaleResponse>>
     {
         private readonly ISaleRepository _saleRepository;
         private readonly ILogger<DeleteSaleHandler> _logger;
