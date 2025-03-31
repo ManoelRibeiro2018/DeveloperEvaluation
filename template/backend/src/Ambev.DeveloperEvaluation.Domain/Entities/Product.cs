@@ -1,17 +1,19 @@
-﻿using Ambev.DeveloperEvaluation.Domain.ValueObjects;
+﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     public class Product
     {
-        public string Title { get; private set; }
-        public decimal Price { get; private set; }
-        public string Description { get; private set; }
-        public string Category { get; private set; }
-        public string Image { get; private set; }
-        public Rating Rating { get; private set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public decimal Price { get; set; }
+        public string Description { get; set; }
+        public ProductCategory Category { get; set; }
+        public string Image { get; set; }
+        public Rating Rating { get; set; }
 
-        public void Update(string title, decimal price, string description, string category, string image, Rating rating)
+        public void Update(string title, decimal price, string description, ProductCategory category, string image, Rating rating)
         {
             Title = title;
             Price = price;
