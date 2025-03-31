@@ -57,7 +57,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.TestSale
             //Given
             var command = SaleHandlerTestData.UpdateSaleHandlerCommand;
 
-            await _validator.ValidateAsync(command);           
+            await _validator.ValidateAsync(command);
 
             //When
             var result = await _handler.Handle(command, CancellationToken.None);

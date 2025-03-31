@@ -1,6 +1,4 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.DeleteSale;
-using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
-using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Application.TestData;
@@ -45,7 +43,6 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.TestSale
             //Then
             Assert.True(result.Success);
             Assert.Equal(204, result.StatusCode);
-
         }
     }
 }
