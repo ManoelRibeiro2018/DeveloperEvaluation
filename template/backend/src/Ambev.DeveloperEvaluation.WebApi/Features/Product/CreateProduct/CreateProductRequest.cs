@@ -1,10 +1,9 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Dtos;
+﻿using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
-using MediatR;
 
-namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Product.CreateProduct
 {
-    public class CreateProductCommand : IRequest<ResultResponse<CreateProductResult>>
+    public class CreateProductRequest
     {
         public string Title { get; set; }
         public decimal Price { get; set; }
