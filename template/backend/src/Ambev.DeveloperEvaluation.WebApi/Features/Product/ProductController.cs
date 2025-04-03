@@ -23,13 +23,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Product
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IMediator mediator, IMapper mapper, ILogger<ProductController> logger)
+        public ProductController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet()]
